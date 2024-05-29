@@ -39,6 +39,26 @@ function FamousSection() {
     // TODO: create POST request to add this new person to the database
     
 
+    axios({
+      method: "POST",
+      url: "/api/people",
+      data: {
+        name:famousPersonName,
+        Role: famousPersonRole
+      }
+    })
+    .then((response) => {
+      // Reset newCountryName * newCountryContinent
+      setPersonName("")
+      setPersonRole("")
+      // Refetch
+      fetchPeople()
+
+    })
+    .catch((error) => {
+      console.error("Something happened on POST request to /api/people: ", error)
+    })
+
     // HINT: the server is expecting a person object 
     //       with a `name` and a `role` property
   
@@ -58,6 +78,11 @@ function FamousSection() {
         </p>
         <ul>
           {/* TODO: Render the list of famous people */}
+          {famousPeopleArray.map((person) => {
+            return (
+              <li key={person.id}><b>{person.name}</b> is in <b>{person.role}</b></li>
+            )
+          })}
         </ul>
       </section>
     );
