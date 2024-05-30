@@ -9,6 +9,12 @@ function FamousSection() {
   let [famousPersonRole, setPersonRole] = useState('');
   let [famousPeopleArray, setPeopleArray] = useState([]);
 
+
+  useEffect(
+    () => {
+      fetchPeople();
+    },
+    [])
   // TODO: on load, call the fetchPeople() function
 
   const fetchPeople = () => {
@@ -26,12 +32,7 @@ function FamousSection() {
     })
   }
 
-  useEffect(
-    () => {
-      fetchPeople();
-    },
-    []
-  )
+  
   const addPerson = (evt) => {
     evt.preventDefault();
     console.log(`The person is ${famousPersonName} and they're famous for ${famousPersonRole}`);
@@ -44,16 +45,15 @@ function FamousSection() {
       url: "/api/people",
       data: {
         name:famousPersonName,
-        Role: famousPersonRole
+        role: famousPersonRole
       }
     })
     .then((response) => {
-      // Reset newCountryName * newCountryContinent
+      // Reset personName * personRole
       setPersonName("")
       setPersonRole("")
       // Refetch
       fetchPeople()
-
     })
     .catch((error) => {
       console.error("Something happened on POST request to /api/people: ", error)
@@ -68,9 +68,9 @@ function FamousSection() {
       <section className="new-person-section">
         <form onSubmit={addPerson}>
           <label htmlFor="name-input">Name:</label>
-          <input id="name-input" onChange={e => setPersonName(e.target.value)} />
+          <input id="name-input" value = {famousPersonName} onChange={e => setPersonName(e.target.value)} />
           <label htmlFor="role-input">Famous for:</label>
-          <input id="role-input" onChange={e => setPersonRole(e.target.value)} />
+          <input id="role-input" value = {famousPersonRole} onChange={e => setPersonRole(e.target.value)} />
           <button type="submit">Done</button>
         </form>
         <p>
